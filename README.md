@@ -1,4 +1,5 @@
 # Create a Pencil Sketch Portrait with OpenCV
+<img src="https://user-images.githubusercontent.com/61585411/167402673-79011733-263d-4b6f-9661-cf3b01894671.jpg" width=600>
 
 ## Procedures
 1. Import the library
@@ -38,12 +39,16 @@ while cap.isOpened():
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     invert_image = 255 - gray_image
 ```
+A negative of the image can be obtained by "inverting" the grayscale value of every pixel. Since by default grayscale values are represented as integers in the range [0,255] (i.e., precision CV_8U), the "inverse" of a grayscale value x is simply 255-x
+
 ## Step 4: Apply a Gaussian blur and blend the grayscle image with the blurred negative
 ```python
     blur_image = cv2.GaussianBlur(invert_image, (21, 21), 0)
     inverted_blur_image = 255 - blur_image
     sketch_image = cv2.divide(gray_image, inverted_blur_image, scale=256.0)
 ```
+A Gaussian blur is an effective way to both reduce noise and reduce the amount of detail in an image (also called smoothing an image). We can implement the dodge function by using `cv2.divide`
+
 ## Step 5: Displaying the output
 ```python
     cv2.imshow('Sketch Demo',sketch_image)
